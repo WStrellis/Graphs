@@ -3,29 +3,47 @@ Simple graph implementation
 """
 from util import Stack, Queue  # These may come in handy
 
+
 class Graph:
 
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
+
     def __init__(self):
         self.vertices = {}
 
-    def add_vertex(self, vertex_id):
+    def add_vertex(self, vertex_id, connections=None):
         """
         Add a vertex to the graph.
         """
-        pass  # TODO
+        if connections:
+            # check that all connection verts are valid
+            ok = self.validate_edges(connections)
+            if not ok:
+                raise ValueError(
+                    f'Invalid connection. Node {c} does not exist in this graph.')
+            self.vertices[vertex_id] = connections
+        else:
+            self.vertices[vertex_id] = set()
 
-    def add_edge(self, v1, v2):
+    def add_edge(self, vert, new_edge):
         """
         Add a directed edge to the graph.
         """
-        pass  # TODO
+        # check vertice
+        if vert not in self.vertices:
+            raise ValueError(f'Invalid node {vert}')
+        # check new edge
+        if new_edge not in self.vertices:
+            raise ValueError(f'Invalid edge {new_edge}')
+        self.vertices[vert].add(new_edge)
 
     def get_neighbors(self, vertex_id):
         """
         Get all neighbors (edges) of a vertex.
         """
-        pass  # TODO
+        if vertex_id in self.vertices:
+            return self.vertices[vertex_id]
+        raise ValueError('Vertex does not exist')
 
     def bft(self, starting_vertex):
         """
@@ -75,6 +93,15 @@ class Graph:
         This should be done using recursion.
         """
         pass  # TODO
+
+    def validate_edges(self, connections):
+        ok = True
+        for c in connections:
+            if not self.vertices.get(c):
+                ok = False
+                break
+        return ok
+
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
