@@ -15,15 +15,15 @@ class Graph:
         """
         Add a vertex to the graph.
         """
-     if connections:
+        if connections:
             # check that all connection verts are valid
             ok = self.validate_edges(connections)
             if not ok:
                 raise ValueError(
                     f'Invalid connection. Node {c} does not exist in this graph.')
             self.vertices[vertex_id] = connections
-    else:
-        self.vertices[vertex_id] = set()
+        else:
+            self.vertices[vertex_id] = set()
 
     def add_edge(self, vert, new_edge):
         """
@@ -94,14 +94,14 @@ class Graph:
         """
         pass  # TODO
 
-    
     def validate_edges(self, connections):
         ok = True
         for c in connections:
             if not self.vertices.get(c):
-            ok = False
-            break
+                ok = False
+                break
         return ok
+
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
