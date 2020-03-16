@@ -2,6 +2,7 @@
 Simple graph implementation
 """
 from util import Stack, Queue  # These may come in handy
+from collections import deque
 
 
 class Graph:
@@ -50,14 +51,39 @@ class Graph:
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        #  create queue
+        will_process = deque()
+        # enqueue start vertex
+        will_process.append(starting_vertex)
+        # create set to store visited vertices
+        visited = set()
+        # while queue is not empty
+        while len(will_process) > 0:
+            # dequeue first vert
+            current = will_process.popleft()
+            # print vertex when it is visited
+            print(current)
+            # mark as visited
+            visited.add(current)
+            # enqueue unvisited
+            for n in self.vertices[current]:
+                if n not in visited:
+                    will_process.append(n)
 
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+#  create stack
+        # push start vertex to stack
+        # create set to store visited vertices
+        # while stack is not empty
+        # dequeue first vert
+        # check if visited
+        # if not visited
+        # mark as visited
+        # enque all neighbors
 
     def dft_recursive(self, starting_vertex):
         """
@@ -74,7 +100,19 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+#  create queue
+        # enqueue A PATH to start vertex
+        # create set to store visited vertices
+        # while queue is not empty
+        # dequeue first vert
+        # get the vertex from the end of the path
+        # check if visited
+        # if not visited
+        # check if it is the destination
+        # if so ,return vertex
+        # mark as visited
+        # enque a path to all of its neighbors
+        # enque the copy
 
     def dfs(self, starting_vertex, destination_vertex):
         """
