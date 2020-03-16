@@ -75,15 +75,25 @@ class Graph:
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-#  create stack
+        #  create stack
+        will_process = deque()
         # push start vertex to stack
+        will_process.append(starting_vertex)
         # create set to store visited vertices
+        visited = set()
         # while stack is not empty
-        # dequeue first vert
-        # check if visited
-        # if not visited
-        # mark as visited
-        # enque all neighbors
+        while len(will_process) > 0:
+            # dequeue first vert
+            current = will_process.pop()
+            if current not in visited:
+                # print current vertex
+                print(current)
+                # mark as visited
+                visited.add(current)
+                # enque unvisited neighbors
+                for n in self.vertices[current]:
+                    if n not in visited:
+                        will_process.append(n)
 
     def dft_recursive(self, starting_vertex):
         """
