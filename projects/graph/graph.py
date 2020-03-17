@@ -110,9 +110,8 @@ class Graph:
         if vertex not in visited:
             print(vertex)
             visited.add(vertex)
-        # call recursively
-        for v in self.vertices[vertex]:
-            if v not in visited:
+            # call on neighbors
+            for v in self.vertices[vertex]:
                 self.dft_recursive(v, visited)
 
     def bfs(self, starting_vertex, destination_vertex):
@@ -144,8 +143,8 @@ class Graph:
                 visited.add(current_vert)
                 # enque a path to all of its neighbors
                 for v in self.vertices[current_vert]:
-                    if v not in visited:
-                        will_process.append(current_path + [v])
+                    copy = current_path.copy()
+                    will_process.append([*copy, v])
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -166,10 +165,10 @@ class Graph:
                 visited.add(current_vert)
 
                 for v in self.vertices[current_vert]:
-                    if v not in visited:
-                        will_process.append(current_path + [v])
+                    copy = current_path.copy()
+                    will_process.append([*copy, v])
 
-    def dfs_recursive(self, starting_vertex):
+    def dfs_recursive(self, starting_vertex, target, path=None, visited=None):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
@@ -177,7 +176,28 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
+        # create stack
+        if path == None:
+            path = []
+        # track visited
+        if visited == None:
+            visited = set()
+
+        if starting_vertex not in visited:
+            visited.add(starting_vertex)
+            path_copy = path.copy()
+            path_copy.append(starting_vertex)
+
+            if starting_vertex == target:
+                return path_copy
+
+            for n in self.get_neighbors(starting_vertex):
+                new_path = self.dfs_recursive(
+                    n,  target, path_copy, visited)
+                if new_path is not None:
+                    return new_path
+
+        return None
 
     def validate_edges(self, connections):
         ok = True
@@ -213,7 +233,7 @@ if __name__ == '__main__':
     Should print:
         {1: {2}, 2: {3, 4}, 3: {5}, 4: {6, 7}, 5: {3}, 6: {3}, 7: {1, 6}}
     '''
-    print(graph.vertices)
+    # print(graph.vertices)
 
     '''
     Valid BFT paths:
@@ -230,7 +250,7 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
-    graph.bft(1)
+    # graph.bft(1)
 
     '''
     Valid DFT paths:
@@ -239,19 +259,43 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
-    graph.dft(1)
-    graph.dft_recursive(1)
+    # graph.dft(1)
+    # graph.dft_recursive(1)
 
     '''
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    print(graph.bfs(1, 6))
+    # print(graph.bfs(1, 6))
 
     '''
     Valid DFS paths:
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
-    print(graph.dfs(1, 6))
+    # print(graph.dfs(1, 6))
     print(graph.dfs_recursive(1, 6))
+
+"""         # create stack
+        if will_process == None:
+            will_process = [[starting_vertex]]
+        # track visited
+        if visited == None:
+            visited = set()
+
+        current_path = will_process.pop()
+        current_vert = current_path[-1]
+
+        if current_vert == target:
+            return current_path
+        else:
+            if current_vert not in visited:
+                visited.add(current_vert)
+
+            for v in self.vertices[current_vert]:
+                if v not in visited:
+                    will_process.append(current_path + [v])
+                    self.dfs_recursive(current_path, target,
+                                       will_process, visited)
+
+ """
