@@ -57,63 +57,6 @@ def get_neighbors(word):
     return results
 
 
-​
-# get_neighbors("cat")
-​
-# # Create an equality function
-# def words_are_neighbors(w1, w2):
-#     '''
-#     return True if words are one letter apart
-#     False otherwise
-#     '''
-#     list_word = list(w1)
-#     # Go through each letter in the word
-#     for i in range(len(list_word)):
-#         # swap with each letter in the alphabet
-#         for letter in ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']:
-#             # Check if that equals given word
-#             temp_word = list_word.copy()
-#             temp_word[i] = letter
-#             if "".join(temp_word) == w2:
-#                 return True
-#     return False
-​
-# def words_are_neighbors(w1, w2):
-#     print(f"comparing {w1} - {w2}")
-#     if len(w1) != len(w2):
-#         return False
-#     for i in range(len(w1)):
-#         if w1[:i] == w2[:i] and w1[i+1:] == w2[i+1:]:
-#             return True
-#     return False
-​
-​
-# def words_are_neighbors(word1, word2):
-#     for i in range(len(word1)):
-#         list_word1 = list(word1)
-#         list_word2 = list(word2)
-#         list_word1.pop(i)
-#         list_word2.pop(i)
-#         if list_word1 == list_word2:
-#             return True
-​
-# words_are_neighbors("abc", "abd")
-​
-# neighbors = {}
-​
-# # Go through each word
-# for word in words:
-#     neighbors[word] = set()
-#     # Go through each potential neighbor
-#     for potential_neighbor in words:
-#         # Add to neighbors if they match
-#         if words_are_neighbors(word, potential_neighbor):
-#             neighbors[word].add(potential_neighbor)
-​
-​
-# def get_neighbors(word):
-#     return neighbors[word]
-​
 # 3: Traverse the graph (BFS)
 
 
