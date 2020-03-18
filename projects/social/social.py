@@ -1,4 +1,5 @@
 from random import shuffle
+from collections import deque
 
 
 class User:
@@ -52,14 +53,16 @@ class SocialGraph:
         for i in range(num_users):
             self.add_user(f'User_{i + 1}')
 
-        # Create friendships
+        # Calculate all possible friendships
         possible_friendships = []
         for user_id in self.users:
             for friend_id in range(user_id + 1, self.last_id + 1):
                 possible_friendships.append((user_id, friend_id))
 
+        # shuffle list of friendships
         shuffle(possible_friendships)
 
+        # calculate total number of friendships to use and add to self
         # create n friendships where n = avg_friendships * num_users  // 2
         # avg_friendships = total_friendships / num_users
         # total_friendships = avg_friendships * num_users
@@ -76,8 +79,30 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
+        # check if user exists
+        if not self.users.get(user_id):
+            raise ValueError(f'Error: No such user {user_id}')
+
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+        # create queue to store unprocessed paths
+        q = deque()
+        # initialize q
+        q.append([user_id])
+
+        # while queue is not empty:
+        while len(q):
+            # get first item in q
+            path = q.popleft()
+            user = path[-1]
+            # check if user has been visited
+            if not visited.get(user):
+                # if not, add user as key to visited with value as path
+                visited[user] = path
+                # equeue a path to each neighbor
+                for friend in self.friendships[user]:
+                    path_copy = path.copy()
+                    q.append([*path_copy, friend])
+
         return visited
 
 
@@ -85,5 +110,5 @@ if __name__ == '__main__':
     sg = SocialGraph()
     sg.populate_graph(10, 2)
     print(sg.friendships)
-    # connections = sg.get_all_social_paths(1)
-    # print(connections)
+    connections = sg.get_all_social_paths(1)
+    print(connections)
