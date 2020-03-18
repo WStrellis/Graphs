@@ -106,9 +106,35 @@ class SocialGraph:
         return visited
 
 
+def percent_of_users(num_users, user, user_connections):
+    """given a number of users in a network, a specific user, and the user's complete network, return the percentage of other users in that user's social network
+
+    Arguments:
+        num_users: int
+        user: int
+        social_connections: obj
+    """
+    # count all friends including user's extended network
+    friends = set()
+    for [_user, _friends] in user_connections.items():
+        friends.update(_friends)
+    # remove user from list of extended network friends
+    friends.remove(user)
+    # divide num_users by friend
+    return f'{len(friends) / num_users :.2%}'
+
+
 if __name__ == '__main__':
     sg = SocialGraph()
     sg.populate_graph(10, 2)
     print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(connections)
+    print(percent_of_users(10, 1, connections))
+
+    sg2 = SocialGraph()
+    sg2.populate_graph(1000, 5)
+    # print(sg2.friendships)
+    connections2 = sg2.get_all_social_paths(1)
+    # print(connections2)
+    print(percent_of_users(1000, 1, connections2))
