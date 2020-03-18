@@ -1,13 +1,16 @@
 
 def create_family_tree_inverse(family):
+    """ Create graph of family with unidirectional edges
+    from child to parents
+    """
     family_tree = {}
-    # for each relationship in family
-    # add the person and their relation to other family members
     for [parent, child] in family:
-        # check if
+        # add person to family_tree
         if child not in family_tree:
             family_tree[child] = set()
+        # set parents of person
         family_tree[child].add(parent)
+        # add person to family_tree
         if parent not in family_tree:
             family_tree[parent] = set()
 
@@ -15,7 +18,7 @@ def create_family_tree_inverse(family):
 
 
 def find_earliest(ancestors, start, current=None):
-    # does start node have parents?
+    # get parents of current person
     parents = ancestors[start]
     # if it does
     if len(parents):
