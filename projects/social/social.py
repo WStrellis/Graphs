@@ -1,5 +1,7 @@
-from random import shuffle
+from random import shuffle, randint
 from collections import deque
+import pprint
+import time
 
 
 class User:
@@ -18,12 +20,15 @@ class SocialGraph:
         Creates a bi-directional friendship
         """
         if user_id == friend_id:
-            print("WARNING: You cannot be friends with yourself")
+            # print("WARNING: You cannot be friends with yourself")
+            return False
         elif friend_id in self.friendships[user_id] or user_id in self.friendships[friend_id]:
-            print("WARNING: Friendship already exists")
+            # print("WARNING: Friendship already exists")
+            return False
         else:
             self.friendships[user_id].add(friend_id)
             self.friendships[friend_id].add(user_id)
+            return True
 
     def add_user(self, name):
         """
@@ -105,6 +110,32 @@ class SocialGraph:
 
         return visited
 
+    def populate_graph_linear(self, num_users, avg_friendships):
+        # Reset graph
+        self.last_id = 0
+        self.users = {}
+        self.friendships = {}
+        # Add users
+        # Write a for loop that calls create user the right amount of times
+        for i in range(num_users):
+            self.add_user(f"User {i+1}")
+        target_friendships = num_users * avg_friendships
+        total_friendships = 0
+        collisions = 0
+        while total_friendships < target_friendships:
+            # Pick a random user
+            user_id = randint(1, num_users)
+            # Pick another random user
+            friend_id = randint(1, num_users)
+            # Try to create the friendship
+            if self.add_friendship(user_id, friend_id):
+                # If it works, increment a counter
+                total_friendships += 2
+            else:
+                # If not, try again
+                collisions += 1
+        print(f"NUM COLLISIONS: {collisions}")
+
 
 def percent_of_users(num_users, user, user_connections):
     """given a number of users in a network, a specific user, and the user's complete network, return the percentage of other users in that user's social network
@@ -125,16 +156,32 @@ def percent_of_users(num_users, user, user_connections):
 
 
 if __name__ == '__main__':
-    sg = SocialGraph()
-    sg.populate_graph(10, 2)
-    print(sg.friendships)
-    connections = sg.get_all_social_paths(1)
-    print(connections)
-    print(percent_of_users(10, 1, connections))
+    # pp = pprint.PrettyPrinter(indent=4, width=79)
+    # sg = SocialGraph()
+    # sg.populate_graph(10, 2)
+    # pp.pprint(sg.friendships)
+    # connections = sg.get_all_social_paths(1)
+    # pp.pprint(connections)
+    # print(percent_of_users(10, 1, connections))
 
-    sg2 = SocialGraph()
-    sg2.populate_graph(1000, 5)
+    # sg2 = SocialGraph()
+    # sg2.populate_graph(1000, 5)
     # print(sg2.friendships)
-    connections2 = sg2.get_all_social_paths(1)
+    # connections2 = sg2.get_all_social_paths(1)
     # print(connections2)
-    print(percent_of_users(1000, 1, connections2))
+    # print(percent_of_users(1000, 1, connections2))
+
+    num_users = 1000
+    avg_friendships = 500
+    sg = SocialGraph()
+    start_time = time.time()
+    sg.populate_graph(num_users, avg_friendships)
+    end_time = time.time()
+    print("\n\n-----")
+    print(f"Quadratic populate: {end_time - start_time} seconds")
+    print("-----\n\n")
+    sg = SocialGraph()
+    start_time = time.time()
+    sg.populate_graph_linear(num_users, avg_friendships)
+    end_time = time.time()
+    print(f"Linear populate: {end_time - start_time} seconds")
