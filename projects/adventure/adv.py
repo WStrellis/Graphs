@@ -13,11 +13,11 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-map_file = "./projects/adventure/maps/test_line.txt"
+# map_file = "./projects/adventure/maps/test_line.txt"
 # map_file = "./projects/adventure/maps/test_cross.txt"
 # map_file = "./projects/adventure/maps/test_loop.txt"
 # map_file = "./projects/adventure/maps/test_loop_fork.txt"
-# map_file = "./projects/adventure/maps/main_maze.txt"
+map_file = "./projects/adventure/maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph = literal_eval(open(map_file, "r").read())
@@ -30,19 +30,19 @@ world.load_graph(room_graph)
 pp = pprint.PrettyPrinter(indent=4, width=79)
 # pp.pprint(world.starting_room.get_exits())
 
-for [k, v] in world.rooms.items():
-    pp.pprint(f'key:{k}, room exits: {v.get_exits()}, room id: {v.id}')
+# for [k, v] in world.rooms.items():
+#     pp.pprint(f'key:{k}, room exits: {v.get_exits()}, room id: {v.id}')
 
-pp.pprint(str(world.rooms[1].get_room_in_direction('s')))
+# pp.pprint(str(world.rooms[1].get_room_in_direction('s')))
 
 player = Player(world.starting_room)
 
 # Fill this out with directions to walk
 traveler = MazeTraveler(world)
-pp.pprint(traveler.adj_list)
+# pp.pprint(traveler.adj_list)
 
 # traversal_path = traveler.traverse_maze()
-traversal_path = traveler.dft()
+result = traveler.traverse_maze()
 
 
 # TRAVERSAL TEST
@@ -54,12 +54,12 @@ traversal_path = traveler.dft()
 #     player.travel(move)
 #     visited_rooms.add(player.current_room)
 
-# if len(visited_rooms) == len(room_graph):
-#     print(
-#         f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
-# else:
-#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-#     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
+if len(result[1]) == len(room_graph):
+    print(
+        f"TESTS PASSED: {len(result[0])} moves, {len(result[1])} rooms visited")
+else:
+    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+    print(f"{len(room_graph) - len(result[1])} unvisited rooms")
 
 
 #######
