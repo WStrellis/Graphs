@@ -9,7 +9,7 @@ class MazeTraveler():
         # the path traveled
         self.path = []
         # count number of rooms fully explored( no rooms with'?' in adj_list)
-        self.fully_explored = 0
+        self.visited_rooms = set()
 
         # initialize adj_list
         for room in world.rooms:
@@ -23,13 +23,14 @@ class MazeTraveler():
         """
         self.dft()
 
-        return self.path
+        return (self.path, self.visited_rooms)
 
     def dft(self):
         """Go as far as possible. when a dead end has been reached use BFS to go back to last room with an unsearched exit.
         """
         start = self.world.starting_room
         stak = [start]
+        self.visited_rooms.add(start)
 
         while len(stak):
             current = stak.pop()
@@ -45,6 +46,8 @@ class MazeTraveler():
                 stak.append(neighbor)
                 # add direction to path
                 self.path.append(direction)
+                # add neighbor to visited rooms
+                self.visited_rooms.add(neighbor)
             else:
                 # use BFS search to find closest neighbor with undiscovered exit
                 next_room = self.bfs(current)
@@ -122,11 +125,6 @@ class MazeTraveler():
                 else:
                     neighbor = found['neighbor']
                     direction = d
-
-        # if no neighbors found
-        # increment self.fully_explored
-        if neighbor == None:
-            self.fully_explored += 1
 
         return {'direction': direction, 'neighbor': neighbor}
 

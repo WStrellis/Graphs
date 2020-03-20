@@ -28,6 +28,7 @@ class Test(unittest.TestCase):
         world.load_graph(self.line_map)
         room0 = world.rooms[0]
         room1 = world.rooms[1]
+        room2 = world.rooms[2]
 
         self.assertEqual(room0.get_room_in_direction(
             'n'), {'direction': 'n', 'neighbor': room1})
@@ -46,10 +47,16 @@ class Test(unittest.TestCase):
 
     def test_line(self):
         world = World()
+
         # Loads the map into a dictionary
         world.load_graph(self.line_map)
+
+        room0 = world.rooms[0]
+        room1 = world.rooms[1]
+        room2 = world.rooms[2]
 
         traveler = MazeTraveler(world)
         traversal_path = traveler.traverse_maze()
 
-        self.assertEqual(traversal_path, ['n', 'n'])
+        self.assertEqual(traversal_path[0], ['n', 'n'])
+        self.assertEqual(traversal_path[1], set([room0, room1, room2]))
